@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css">
+  <title>Arquitectura de software</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="https://github.com/juanvladimir13" target="_blank">@juanvladimir13</a>
+      <ul>
+        <li>
+          <a href="/mvccategoria">MVC Categoria</a>
+        </li>
+        <li>
+          <a href="/mvcproducto">MVC Producto</a>
+        </li>
+        <li>
+          <a href="/capacategoria">Capa Categoria</a>
+        </li>
+        <li>
+          <a href="/capaproducto">Capa Producto</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <div id="app"></div>
+    </section>
+  </main>
+
+
+  <template id="producto">
+    <div class="container">
+      <form>
+        <h3>Gestionar producto</h3>
+        <input id="id" hidden>
+  
+        <label for="nombre">NOMBRE</label>
+        <input type="text" id="nombre" placeholder="nombre" required>
+  
+        <label for="precio">PRECIO</label>
+        <input type="number" id="precio" placeholder="precio" required>
+
+        <label for="categoria_id">CATEGORIA</label>
+        <select id="categoria_id" required></select>
+  
+        <div class="controls">
+          <button id="btnCreate" type="button">Create</button>
+          <button id="btnSave" type="button">Save</button>
+        </div>
+      </form>
+      <p id="errors"></p>
+      <section id="table"></section>
+    </div>
+  </template>
+
+  <template id="categoria">
+    <div class="container">
+      <form>
+        <h3>Gestionar categoria</h3>
+        <input id="id" hidden>
+  
+        <label for="nombre">NOMBRE</label>
+        <input type="text" id="nombre" placeholder="nombre" required>
+  
+        <label for="descripcion">DESCRIPCION</label>
+        <input type="text" id="descripcion" placeholder="descripcion" required>
+  
+        <div class="controls">
+          <button id="btnCreate" type="button">Create</button>
+          <button id="btnSave" type="button">Save</button>
+        </div>
+      </form>
+      <p id="errors"></p>
+      <section id="table"></section>
+    </div>
+  </template>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
