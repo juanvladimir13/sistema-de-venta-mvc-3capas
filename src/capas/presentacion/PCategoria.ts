@@ -1,9 +1,10 @@
 import { Categoria } from '../../interfaces/system';
 import { NCategoria } from '../negocio/NCategoria';
+
 export class PCategoria {
   private negocio: NCategoria;
 
-  private component: HTMLDivElement;
+  private component: HTMLElement;
 
   public btnSave: HTMLButtonElement;
   public btnCreate: HTMLButtonElement;
@@ -17,7 +18,7 @@ export class PCategoria {
   constructor() {
     const $template = document.querySelector<HTMLTemplateElement>('#categoria');
     const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
-    this.component = $templateContent?.cloneNode(true) as HTMLDivElement;
+    this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'Capas Categoria';
 
@@ -86,18 +87,19 @@ export class PCategoria {
     table.innerHTML = tableHTML;
   }
 
-  getComponent(): HTMLDivElement {
+  getHTML(): HTMLElement {
     return this.component;
   }
 
-  create(): void {
+  create(): HTMLElement {
     const table = this.negocio.list();
 
     this.setTable(table);
     this.clearData();
+    return this.getHTML();
   }
 
-  save(): void {
+  save(): HTMLElement {
     const data = this.getData();
     this.negocio.setData(data);
     const model = this.negocio.save();
@@ -105,20 +107,17 @@ export class PCategoria {
     if (!model) {
       this.setDataError('Error');
       this.setTable(this.negocio.list());
-      return;
+      return this.getHTML();
     }
 
     this.setData(model);
     this.setTable(this.negocio.list());
+    return this.getHTML();
   }
 
   delete(id: number): void {
     this.negocio.delete(id);
     window.location.assign('/capacategoria');
-  }
-
-  showForm(): HTMLDivElement {
-    return this.getComponent();
   }
 
   _initListener(): void {

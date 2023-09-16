@@ -1,11 +1,12 @@
 import { Categoria, Producto } from '../../interfaces/system';
 import { NCategoria } from '../negocio/NCategoria';
 import { NProducto } from '../negocio/NProducto';
+
 export class PProducto {
-  private negocio : NProducto;
+  private negocio: NProducto;
   private negocioCategoria: NCategoria;
 
-  private component: HTMLDivElement;
+  private component: HTMLElement;
 
   public btnSave: HTMLButtonElement;
   public btnCreate: HTMLButtonElement;
@@ -23,7 +24,7 @@ export class PProducto {
 
     const $template = document.querySelector<HTMLTemplateElement>('#producto');
     const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
-    this.component = $templateContent?.cloneNode(true) as HTMLDivElement;
+    this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'Capas Producto';
 
@@ -109,11 +110,7 @@ export class PProducto {
     table.innerHTML = tableHTML;
   }
 
-  getComponent(): HTMLDivElement {
-    return this.component;
-  }
-
-  create(): void {
+  create(): HTMLElement {
     const table = this.negocio.list();
 
     this.setTable(table);
@@ -121,9 +118,11 @@ export class PProducto {
 
     const categorias = this.negocioCategoria.list();
     this.setCategorias(categorias);
+
+    return this.getHTML();
   }
 
-  save(): void {
+  save(): HTMLElement {
     const data = this.getData();
     this.negocio.setData(data);
     const model = this.negocio.save();
@@ -131,11 +130,12 @@ export class PProducto {
     if (!model) {
       this.setDataError('Error');
       this.setTable(this.negocio.list());
-      return;
+      return this.getHTML();
     }
 
     this.setData(model);
     this.setTable(this.negocio.list());
+    return this.getHTML();
   }
 
   delete(id: number): void {
@@ -143,8 +143,8 @@ export class PProducto {
     window.location.assign('/capaproducto');
   }
 
-  showForm(): HTMLDivElement {
-    return this.getComponent();
+  getHTML(): HTMLElement {
+    return this.component;
   }
 
   _initListener(): void {

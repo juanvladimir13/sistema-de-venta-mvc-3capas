@@ -12,14 +12,15 @@ export class CCategoria {
     this._initListener();
   }
 
-  create(): void {
+  create(): HTMLElement {
     const table = this.model.list();
 
     this.view.setTable(table);
     this.view.clearData();
+    return this.view.getHTML();
   }
 
-  save(): void {
+  save(): HTMLElement {
     const data = this.view.getData();
     this.model.setData(data);
     const model = this.model.save();
@@ -27,20 +28,17 @@ export class CCategoria {
     if (!model) {
       this.view.setDataError('Error');
       this.view.setTable(this.model.list());
-      return;
+      return this.view.getHTML();
     }
 
     this.view.setData(model);
     this.view.setTable(this.model.list());
+    return this.view.getHTML();
   }
 
   delete(id: number): void {
     this.model.delete(id);
     window.location.assign('/mvccategoria');
-  }
-
-  showForm(): HTMLDivElement {
-    return this.view.getComponent();
   }
 
   _initListener(): void {

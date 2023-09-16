@@ -1,7 +1,7 @@
 import { Categoria } from '../../interfaces/system';
 
 export class VCategoria {
-  private component: HTMLDivElement;
+  private component: HTMLElement;
 
   public btnSave: HTMLButtonElement;
   public btnCreate: HTMLButtonElement;
@@ -15,7 +15,7 @@ export class VCategoria {
   constructor() {
     const $template = document.querySelector<HTMLTemplateElement>('#categoria');
     const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
-    this.component = $templateContent?.cloneNode(true) as HTMLDivElement;
+    this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'MVC Categoria';
 
@@ -81,7 +81,7 @@ export class VCategoria {
     table.innerHTML = tableHTML;
   }
 
-  getComponent(): HTMLDivElement {
+  getHTML(): HTMLElement {
     return this.component;
   }
 }

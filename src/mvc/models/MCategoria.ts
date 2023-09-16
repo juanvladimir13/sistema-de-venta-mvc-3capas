@@ -34,7 +34,7 @@ export class MCategoria {
       this.database.update(data);
   }
 
-  delete(id:number):boolean {
+  delete(id: number): boolean {
     return this.database.delete(id);
   }
 

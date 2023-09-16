@@ -14,57 +14,41 @@ const mvcProducto = new CProducto();
 const capaCategoria = new PCategoria();
 const capaProducto = new PProducto();
 
+let response!: HTMLElement;
+
 createRouter()
   .get('/mvccategoria', () => {
-    mvcCategoria.create();
-
+    response = mvcCategoria.create();
     root.innerHTML = '';
-    root.append(mvcCategoria.showForm());
+    root.append(response);
   })
   .get('/mvccategoria/:id', (req: any) => {
     const id = req.params.id;
     mvcCategoria.delete(id);
-
-    root.innerHTML = '';
-    root.append(mvcCategoria.showForm());
   }).get('/mvcproducto', () => {
-    mvcProducto.create();
-    
+    response = mvcProducto.create();
     root.innerHTML = '';
-    root.append(mvcProducto.showForm());
+    root.append(response);
   })
   .get('/mvcproducto/:id', (req: any) => {
     const id = req.params.id;
     mvcProducto.delete(id);
-
-    root.innerHTML = '';
-    root.append(mvcProducto.showForm());
   })
   .get('/capacategoria', () => {
-    capaCategoria.create();
-
+    response = capaCategoria.create();
     root.innerHTML = '';
-    root.append(capaCategoria.showForm());
+    root.append(response);
   })
   .get('/capacategoria/:id', (req: any) => {
     const id = req.params.id;
     capaCategoria.delete(id);
-
-    root.innerHTML = '';
-    root.append(capaCategoria.showForm());
   })
-
   .get('/capaproducto', () => {
-    capaProducto.create();
-
+    response = capaProducto.create();
     root.innerHTML = '';
-    root.append(capaProducto.showForm());
+    root.append(response);
   })
   .get('/capaproducto/:id', (req: any) => {
     const id = req.params.id;
     capaProducto.delete(id);
-
-    root.innerHTML = '';
-    root.append(capaProducto.showForm());
-  })
-  .run();
+  }).run();

@@ -1,6 +1,6 @@
 import { Categoria, Producto } from '../../interfaces/system';
 export class VProducto {
-  private component: HTMLDivElement;
+  private component: HTMLElement;
 
   public btnSave: HTMLButtonElement;
   public btnCreate: HTMLButtonElement;
@@ -15,7 +15,7 @@ export class VProducto {
   constructor() {
     const $template = document.querySelector<HTMLTemplateElement>('#producto');
     const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
-    this.component = $templateContent?.cloneNode(true) as HTMLDivElement;
+    this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'MVC Producto';
 
@@ -99,7 +99,7 @@ export class VProducto {
     table.innerHTML = tableHTML;
   }
 
-  getComponent(): HTMLDivElement {
+  getHTML(): HTMLElement {
     return this.component;
   }
 }
