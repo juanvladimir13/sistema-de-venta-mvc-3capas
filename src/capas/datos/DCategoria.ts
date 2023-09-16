@@ -34,8 +34,12 @@ export class DCategoria {
       this.database.update(data);
   }
 
-  delete(id:number):boolean {
+  delete(id: number): boolean {
     return this.database.delete(id);
+  }
+
+  find(id: number): Categoria | undefined {
+    return this.database.find(id);
   }
 
   list(): Categoria[] {

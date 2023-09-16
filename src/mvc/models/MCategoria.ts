@@ -38,6 +38,10 @@ export class MCategoria {
     return this.database.delete(id);
   }
 
+  find(id: number): Categoria | undefined {
+    return this.database.find(id);
+  }
+
   list(): Categoria[] {
     return this.database.list();
   }

@@ -16,6 +16,7 @@ export class PProducto {
   private inputPrecio: HTMLInputElement;
   private inputCategoria: HTMLSelectElement;
 
+  public outputTable: HTMLTableElement;
   private outputError: HTMLParagraphElement;
 
   constructor() {
@@ -37,6 +38,7 @@ export class PProducto {
 
     this.inputCategoria = this.component.querySelector('#categoria_id') as HTMLSelectElement;
 
+    this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
 
     this._initListener();
@@ -55,6 +57,7 @@ export class PProducto {
     this.inputId.value = String(data.id);
     this.inputNombre.value = data.nombre;
     this.inputPrecio.value = String(data.precio);
+    this.inputCategoria.value = String(data.categoria_id);
   }
 
   clearData(): void {
@@ -81,20 +84,22 @@ export class PProducto {
   }
 
   setTable(rows: Producto[]): void {
-    let tbody = ''
+    let cells = ''
 
     rows.forEach(row => {
-      tbody += `<tr>
+      cells += `<tr>
       <td>${row.nombre}</td>
       <td>${row.precio}</td>
       <td>${row.categoria_id}</td>
-      <td><a href="/capaproducto/${row.id}">Eliminar</a></td>
+      <td>
+        <button data-id="${row.id}" data-type="view">Ver</button>
+        <button data-id="${row.id}" data-type="delete">Eliminar</button>
+      </td>
       </tr>`
     });
 
     const tableHTML = `
-    <table>
-      <thead>
+    <thead>
         <tr>
           <th>Nombre</th>
           <th>Precio</th>
@@ -102,12 +107,12 @@ export class PProducto {
           <th></th>
         </tr>
       </thead>
-      ${tbody}
-    </table>
+      <tbody>
+        ${cells}
+      </tbody>
     `
 
-    const table = this.component.querySelector('#table') as HTMLTableElement;
-    table.innerHTML = tableHTML;
+    this.outputTable.innerHTML = tableHTML;
   }
 
   create(): HTMLElement {
@@ -139,8 +144,22 @@ export class PProducto {
   }
 
   delete(id: number): void {
-    this.negocio.delete(id);
-    window.location.assign('/capaproducto');
+    const state = this.negocio.delete(id);
+    if (!state)
+      this.setDataError('Error');
+
+    this.clearData();
+    this.setTable(this.negocio.list());
+  }
+
+  find(id: number): void {
+    const data = this.negocio.find(id);
+    if (!data) {
+      this.setDataError('error');
+      return;
+    }
+
+    this.setData(data!);
   }
 
   getHTML(): HTMLElement {
@@ -154,6 +173,19 @@ export class PProducto {
 
     this.btnSave.addEventListener('click', () => {
       this.save();
-    })
+    });
+
+    this.outputTable.addEventListener('click', (evt) => {
+      const element = evt.target as HTMLElement;
+      if (element.nodeName != 'BUTTON')
+        return;
+
+      const id = element.getAttribute('data-id') || 0;
+      if (element.getAttribute('data-type') == 'delete')
+        this.delete(Number(id));
+
+      if (element.getAttribute('data-type') == 'view')
+        this.find(Number(id));
+    });
   }
 }

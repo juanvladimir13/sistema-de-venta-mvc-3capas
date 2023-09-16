@@ -37,8 +37,22 @@ export class CCategoria {
   }
 
   delete(id: number): void {
-    this.model.delete(id);
-    window.location.assign('/mvccategoria');
+    const state = this.model.delete(id);
+    if (!state)
+      this.view.setDataError('Error');
+
+    this.view.clearData();
+    this.view.setTable(this.model.list());
+  }
+
+  find(id: number): void {
+    const data = this.model.find(id);
+    if (!data) {
+      this.view.setDataError('error');
+      return;
+    }
+
+    this.view.setData(data!);
   }
 
   _initListener(): void {
@@ -48,6 +62,19 @@ export class CCategoria {
 
     this.view.btnSave.addEventListener('click', () => {
       this.save();
-    })
+    });
+
+    this.view.outputTable.addEventListener('click', (evt) => {
+      const element = evt.target as HTMLElement;
+      if (element.nodeName != 'BUTTON')
+        return;
+
+      const id = element.getAttribute('data-id') || 0;
+      if (element.getAttribute('data-type') == 'delete')
+        this.delete(Number(id));
+
+      if (element.getAttribute('data-type') == 'view')
+        this.find(Number(id));
+    });
   }
 }

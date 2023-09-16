@@ -37,6 +37,11 @@ export class DatabaseJson<T> {
     return newRows.length != rows.length;
   }
 
+  find(id: number): T | undefined {
+    const rows = this._readFileJson();
+    return rows.find(item => item.id == id);
+  }
+
   list(): T[] {
     return this._readFileJson() as T[];
   }

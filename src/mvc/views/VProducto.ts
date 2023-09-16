@@ -10,6 +10,7 @@ export class VProducto {
   private inputPrecio: HTMLInputElement;
   private inputCategoria: HTMLSelectElement;
 
+  public outputTable: HTMLTableElement;
   private outputError: HTMLParagraphElement;
 
   constructor() {
@@ -28,6 +29,7 @@ export class VProducto {
 
     this.inputCategoria = this.component.querySelector('#categoria_id') as HTMLSelectElement;
 
+    this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
   }
 
@@ -44,6 +46,7 @@ export class VProducto {
     this.inputId.value = String(data.id);
     this.inputNombre.value = data.nombre;
     this.inputPrecio.value = String(data.precio);
+    this.inputCategoria.value = String(data.categoria_id);
   }
 
   clearData(): void {
@@ -70,20 +73,22 @@ export class VProducto {
   }
 
   setTable(rows: Producto[]): void {
-    let tbody = ''
+    let cells = ''
 
     rows.forEach(row => {
-      tbody += `<tr>
+      cells += `<tr>
       <td>${row.nombre}</td>
       <td>${row.precio}</td>
       <td>${row.categoria_id}</td>
-      <td><a href="/mvcproducto/${row.id}">Eliminar</a></td>
+      <td>
+        <button data-id="${row.id}" data-type="view">Ver</button>
+        <button data-id="${row.id}" data-type="delete">Eliminar</button>
+      </td>
       </tr>`
     });
 
     const tableHTML = `
-    <table>
-      <thead>
+    <thead>
         <tr>
           <th>Nombre</th>
           <th>Precio</th>
@@ -91,12 +96,12 @@ export class VProducto {
           <th></th>
         </tr>
       </thead>
-      ${tbody}
-    </table>
+      <tbody>
+        ${cells}
+      </tbody>
     `
 
-    const table = this.component.querySelector('#table') as HTMLTableElement;
-    table.innerHTML = tableHTML;
+    this.outputTable.innerHTML = tableHTML;
   }
 
   getHTML(): HTMLElement {

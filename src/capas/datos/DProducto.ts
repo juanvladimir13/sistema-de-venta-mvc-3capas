@@ -42,6 +42,10 @@ export class DProducto {
     return this.database.delete(id);
   }
 
+  find(id: number): Producto | undefined {
+    return this.database.find(id);
+  }
+
   list(): Producto[] {
     return this.database.list();
   }

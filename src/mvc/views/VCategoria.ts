@@ -10,6 +10,7 @@ export class VCategoria {
   private inputNombre: HTMLInputElement;
   private inputDescripcion: HTMLInputElement;
 
+  public outputTable: HTMLTableElement;
   private outputError: HTMLParagraphElement;
 
   constructor() {
@@ -26,6 +27,7 @@ export class VCategoria {
     this.inputNombre = this.component.querySelector('#nombre') as HTMLInputElement;
     this.inputDescripcion = this.component.querySelector('#descripcion') as HTMLInputElement;
 
+    this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
   }
 
@@ -54,18 +56,20 @@ export class VCategoria {
   }
 
   setTable(rows: Categoria[]): void {
-    let tbody = ''
+    let cells = ''
 
     rows.forEach(row => {
-      tbody += `<tr>
+      cells += `<tr>
       <td>${row.nombre}</td>
       <td>${row.descripcion}</td>
-      <td><a href="/mvccategoria/${row.id}">Eliminar</a></td>
+      <td>
+        <button data-id="${row.id}" data-type="view">Ver</button>
+        <button data-id="${row.id}" data-type="delete">Eliminar</button>
+      </td>
       </tr>`
     });
 
     const tableHTML = `
-    <table>
       <thead>
         <tr>
           <th>Nombre</th>
@@ -73,12 +77,12 @@ export class VCategoria {
           <th></th>
         </tr>
       </thead>
-      ${tbody}
-    </table>
+      <tbody>
+        ${cells}
+      </tbody>
     `
 
-    const table = this.component.querySelector('#table') as HTMLTableElement;
-    table.innerHTML = tableHTML;
+    this.outputTable.innerHTML = tableHTML;
   }
 
   getHTML(): HTMLElement {

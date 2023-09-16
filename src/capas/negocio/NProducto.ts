@@ -20,6 +20,10 @@ export class NProducto {
     return this.data.delete(id);
   }
 
+  find(id: number): Producto | undefined {
+    return this.data.find(id);
+  }
+
   list():Producto[] {
     return this.data.list();
   }

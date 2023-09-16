@@ -23,6 +23,10 @@ button {
   padding-right: 10px;
 }
 
+select {
+  width: 100%;
+}
+
 table {
   margin-top: 15px;
 }
