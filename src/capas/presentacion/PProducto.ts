@@ -24,7 +24,7 @@ export class PProducto {
     this.negocioCategoria = new NCategoria();
 
     const $template = document.querySelector<HTMLTemplateElement>('#producto');
-    const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
+    const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'Capas Producto';
@@ -90,10 +90,9 @@ export class PProducto {
       cells += `<tr>
       <td>${row.nombre}</td>
       <td>${row.precio}</td>
-      <td>${row.categoria_id}</td>
-      <td>
-        <button data-id="${row.id}" data-type="view">Ver</button>
-        <button data-id="${row.id}" data-type="delete">Eliminar</button>
+      <td width="50px">
+        <button data-id="${row.id}" data-type="view">🔎</button>
+        <button data-id="${row.id}" data-type="delete">❌</button>
       </td>
       </tr>`
     });
@@ -103,8 +102,7 @@ export class PProducto {
         <tr>
           <th>Nombre</th>
           <th>Precio</th>
-          <th>Categoria</th>
-          <th></th>
+          <th width="50px"></th>
         </tr>
       </thead>
       <tbody>

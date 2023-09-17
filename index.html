@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap-grid.min.css">
   <title>Arquitectura de software</title>
 </head>
 
@@ -13,77 +15,161 @@
     <nav>
       <a href="https://github.com/juanvladimir13" target="_blank">@juanvladimir13</a>
       <ul>
-        <li>
-          <a href="/mvccategoria">MVC Categoria</a>
+        <li><a href="#">MVC</a>
+          <ul>
+            <li>
+              <a href="/mvccategoria">Categoria</a>
+            </li>
+            <li>
+              <a href="/mvcproducto">Producto</a>
+            </li>
+            <li>
+              <a href="/mvcventa">Venta</a>
+            </li>
+          </ul>
         </li>
         <li>
-          <a href="/mvcproducto">MVC Producto</a>
-        </li>
-        <li>
-          <a href="/capacategoria">Capa Categoria</a>
-        </li>
-        <li>
-          <a href="/capaproducto">Capa Producto</a>
+          <a href="#">3 Capas</a>
+          <ul>
+            <li>
+              <a href="/capacategoria">Categoria</a>
+            </li>
+            <li>
+              <a href="/capaproducto">Producto</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </nav>
   </header>
 
-  <main>
-    <section>
-      <div id="app"></div>
-    </section>
-  </main>
+  <div id="app" class="container-fluid"></div>
 
+  <template id="venta">
+    <div id="container">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-9">
+          <form>
+            <div class="d-flex align-items-center justify-content-between">
+              <h3 class="m-0">Gestionar producto</h3>
+              <div class="controls">
+                <button id="btnCreate" type="button">Create</button>
+                <button id="btnSave" type="button">Save</button>
+              </div>
+            </div>
+            <input id="id" type="number" value="0" hidden>
+            <p id="errors"></p>
+
+            <div class="row">
+              <div class="col-6 col-sm-3">
+                <label for="fecha">FECHA</label>
+                <input type="date" id="fecha" placeholder="fecha" required>
+              </div>
+              <div class="col-6 col-sm-3">
+                <label for="montoTotal">M TOTAL</label>
+                <input type="number" id="montoTotal" value="0" readonly>
+              </div>
+            </div>
+          </form>
+
+          <div class="controls">
+            <button id="btnAppend" type="button">+</button>
+          </div>
+
+          <section id="detallesVenta">
+          </section>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-3">
+          <table id="table" class="table-venta"></table>
+        </div>
+      </div>
+
+      <div id="detalleVenta" class="item" style="display: none;">
+        <input type="number" name="id" value="0" hidden>
+        <select name="producto_id"></select>
+        <input type="number" name="cantidad" placeholder="cantidad">
+        <input type="number" name="precio" placeholder="precio .Bs">
+        <button type="button">-</button>
+      </div>
+    </div>
+  </template>
 
   <template id="producto">
-    <div class="container">
-      <form>
-        <h3>Gestionar producto</h3>
-        <input id="id" hidden>
-  
-        <label for="nombre">NOMBRE</label>
-        <input type="text" id="nombre" placeholder="nombre" required>
-  
-        <label for="precio">PRECIO</label>
-        <input type="number" id="precio" placeholder="precio" required>
+    <div id="container">
+      <div class="row">
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+          <form>
+            <div class="d-flex align-items-center justify-content-between">
+              <h3 class="m-0">Gestionar producto</h3>
+              <div class="controls">
+                <button id="btnCreate" type="button">Create</button>
+                <button id="btnSave" type="button">Save</button>
+              </div>
+            </div>
+            <input id="id" type="number" value="0" hidden>
+            <p id="errors"></p>
 
-        <label for="categoria_id">CATEGORIA</label>
-        <select id="categoria_id" required></select>
-  
-        <div class="controls">
-          <button id="btnCreate" type="button">Create</button>
-          <button id="btnSave" type="button">Save</button>
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">
+                <label for="nombre">NOMBRE</label>
+                <input type="text" id="nombre" placeholder="nombre" required>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <label for="precio">PRECIO</label>
+                <input type="number" id="precio" placeholder="precio" required>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <label for="categoria_id">CATEGORIA</label>
+                <select id="categoria_id" required></select>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
-      <p id="errors"></p>
-      <section>
-        <table id="table"></table>
-      </section>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+          <table id="table"></table>
+        </div>
+      </div>
     </div>
   </template>
 
   <template id="categoria">
-    <div class="container">
-      <form>
-        <h3>Gestionar categoria</h3>
-        <input id="id" hidden>
-  
-        <label for="nombre">NOMBRE</label>
-        <input type="text" id="nombre" placeholder="nombre" required>
-  
-        <label for="descripcion">DESCRIPCION</label>
-        <input type="text" id="descripcion" placeholder="descripcion" required>
-  
-        <div class="controls">
-          <button id="btnCreate" type="button">Create</button>
-          <button id="btnSave" type="button">Save</button>
+    <div id="container">
+      <div class="row">
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+          <form>
+            <div class="d-flex align-items-center justify-content-between">
+              <h3 class="m-0">Gestionar categoria</h3>
+              <div class="controls">
+                <button id="btnCreate" type="button">Create</button>
+                <button id="btnSave" type="button">Save</button>
+              </div>
+            </div>
+            
+            <input id="id" type="number" value="0" hidden>
+            <p id="errors"></p>
+
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <label for="nombre">NOMBRE</label>
+                <input type="text" id="nombre" placeholder="nombre" required>
+              </div>
+              <div class="col-12 col-sm-6">
+                <label for="descripcion">DESCRIPCION</label>
+                <input type="text" id="descripcion" placeholder="descripcion" required>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
-      <p id="errors"></p>
-      <section>
-        <table id="table"></table>
-      </section>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+          <table id="table"></table>
+        </div>
+      </div>
     </div>
   </template>
 

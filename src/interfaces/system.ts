@@ -10,3 +10,19 @@ export interface Producto {
   precio: number;
   categoria_id:number;
 }
+
+export interface Venta {
+  id:number;
+  fecha: string;
+  montoTotal:number;
+  detallesVenta?: DetalleVenta[];
+}
+
+export interface DetalleVenta {
+  id: number;
+  venta_id: number;
+  producto_id: number;
+  cantidad: number;
+  precio: number;
+  montoTotal?: number;
+}

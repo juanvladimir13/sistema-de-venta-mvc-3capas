@@ -12,7 +12,7 @@ export class DatabaseJson<T> {
 
   insert(data: T): T {
     let rows = this._readFileJson();
-    const dataTemp = { ...data, id: Date.now() };
+    const dataTemp = { ...data, id: Date.now() + Math.floor(Math.random() * Date.now()) };
     rows.push(dataTemp);
     this._writeFileJson(rows);
     return dataTemp;

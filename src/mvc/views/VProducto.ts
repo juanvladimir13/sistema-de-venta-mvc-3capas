@@ -15,7 +15,7 @@ export class VProducto {
 
   constructor() {
     const $template = document.querySelector<HTMLTemplateElement>('#producto');
-    const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
+    const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'MVC Producto';
@@ -79,10 +79,9 @@ export class VProducto {
       cells += `<tr>
       <td>${row.nombre}</td>
       <td>${row.precio}</td>
-      <td>${row.categoria_id}</td>
-      <td>
-        <button data-id="${row.id}" data-type="view">Ver</button>
-        <button data-id="${row.id}" data-type="delete">Eliminar</button>
+      <td width="50px">
+        <button data-id="${row.id}" data-type="view">🔎</button>
+        <button data-id="${row.id}" data-type="delete">❌</button>
       </td>
       </tr>`
     });
@@ -91,9 +90,8 @@ export class VProducto {
     <thead>
         <tr>
           <th>Nombre</th>
-          <th>Precio</th>
-          <th>Categoria</th>
-          <th></th>
+          <th>.Bs</th>
+          <th width="50px"></th>
         </tr>
       </thead>
       <tbody>

@@ -15,7 +15,7 @@ export class VCategoria {
 
   constructor() {
     const $template = document.querySelector<HTMLTemplateElement>('#categoria');
-    const $templateContent = $template?.content.querySelector<HTMLElement>('.container');
+    const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
     this.component.querySelector('h3')!.textContent = 'MVC Categoria';
@@ -62,9 +62,9 @@ export class VCategoria {
       cells += `<tr>
       <td>${row.nombre}</td>
       <td>${row.descripcion}</td>
-      <td>
-        <button data-id="${row.id}" data-type="view">Ver</button>
-        <button data-id="${row.id}" data-type="delete">Eliminar</button>
+      <td width="50px">
+        <button data-id="${row.id}" data-type="view">🔎</button>
+        <button data-id="${row.id}" data-type="delete">❌</button>
       </td>
       </tr>`
     });
@@ -74,7 +74,7 @@ export class VCategoria {
         <tr>
           <th>Nombre</th>
           <th>Descripcion</th>
-          <th></th>
+          <th width="50px"></th>
         </tr>
       </thead>
       <tbody>

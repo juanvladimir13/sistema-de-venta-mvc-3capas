@@ -15,6 +15,10 @@ h3 {
   margin-top: 0px;
 }
 
+input {
+  width: 80% !important;
+}
+
 button {
   padding-top: 3px;
   padding-bottom: 3px;
@@ -24,11 +28,22 @@ button {
 }
 
 select {
-  width: 100%;
+  width: 80%;
 }
 
 table {
   margin-top: 15px;
+  display: table !important;
+  width: 100%;
+}
+
+.table-venta {
+  max-width: fit-content !important; 
+  margin-top: 0px !important;
+}
+
+form {
+  max-width: 100%;
 }
 
 .controls {
@@ -38,4 +53,30 @@ table {
 
 #btnSave {
   margin-left: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  width: 95%;
+}
+
+.item>input {
+  width: 30%;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.item>select {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+button[data-type] {
+  background: none;
+  border: none;
+  padding: 1px;
+  margin: 1px;
 }
