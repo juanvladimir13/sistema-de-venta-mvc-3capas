@@ -1,5 +1,5 @@
 /**
- * @author @juanvladimir13
+ * @author juanvladimir13
  * @mail juanvladimir13@gmail.com
  * @github https://www.github.com/juanvladimir13
  */

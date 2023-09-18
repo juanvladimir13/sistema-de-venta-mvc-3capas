@@ -1,7 +1,7 @@
 import { DatabaseJson } from "../../utils/database_json";
 import { DetalleVenta } from "../../interfaces/system";
 
-export class MDetalleVenta {
+export class DDetalleVenta {
   private id: number;
   private venta_id: number;
   private producto_id: number;

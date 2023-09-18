@@ -24,5 +24,5 @@ export interface DetalleVenta {
   producto_id: number;
   cantidad: number;
   precio: number;
-  montoTotal?: number;
+  subTotal: number;
 }

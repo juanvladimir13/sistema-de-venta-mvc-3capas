@@ -4,9 +4,11 @@ import './style.css';
 
 import { CCategoria } from './mvc/controllers/CCategoria';
 import { CProducto } from './mvc/controllers/CProducto';
+import { CVenta } from './mvc/controllers/CVenta';
+
 import { PCategoria } from './capas/presentacion/PCategoria';
 import { PProducto } from './capas/presentacion/PProducto';
-import { CVenta } from './mvc/controllers/CVenta';
+import { PVenta } from './capas/presentacion/PVenta';
 
 const root = document.querySelector('#app') as HTMLDivElement;
 
@@ -16,6 +18,7 @@ const mvcVenta = new CVenta();
 
 const capaCategoria = new PCategoria();
 const capaProducto = new PProducto();
+const capaVenta = new PVenta();
 
 let response!: HTMLElement;
 
@@ -41,6 +44,11 @@ createRouter()
   })
   .get('/capaproducto', () => {
     response = capaProducto.create();
+    root.innerHTML = '';
+    root.append(response);
+  })
+  .get('/capaventa', () => {
+    response = capaVenta.create();
     root.innerHTML = '';
     root.append(response);
   }).run();

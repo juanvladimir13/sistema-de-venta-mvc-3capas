@@ -1,6 +1,8 @@
 import { Venta, DetalleVenta, Producto } from '../../interfaces/system';
+import { NProducto } from '../negocio/NProducto';
+import { NVenta } from '../negocio/NVenta';
 
-export class VVenta {
+export class PVenta {
   private component: HTMLElement;
 
   public btnSave: HTMLButtonElement;
@@ -15,12 +17,16 @@ export class VVenta {
   public outputTable: HTMLTableElement;
   private outputError: HTMLParagraphElement;
 
+  private negocio: NVenta;
+
   constructor() {
+    this.negocio = new NVenta();
+
     const $template = document.querySelector<HTMLTemplateElement>('#venta');
     const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
-    this.component.querySelector('h3')!.textContent = 'MVC Venta';
+    this.component.querySelector('h3')!.textContent = 'Capas Venta';
 
     this.btnCreate = this.component.querySelector('#btnCreate') as HTMLButtonElement;
     this.btnSave = this.component.querySelector('#btnSave') as HTMLButtonElement;
@@ -33,6 +39,8 @@ export class VVenta {
     this.inputDetallesVenta = this.component.querySelector('#detallesVenta') as HTMLDivElement;
     this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
+
+    this._initListener();
   }
 
   getData(): Venta {
@@ -176,5 +184,89 @@ export class VVenta {
     btnDelete.setAttribute('data-row', id);
 
     this.inputDetallesVenta.append(inputDetalleVenta);
+  }
+
+  create(): HTMLElement {
+    const producto = new NProducto();
+    this.inflaterSelectProducto(producto.list());
+    
+    const table = this.negocio.list();
+    this.setTable(table);
+    this.clearData();
+    return this.getHTML();
+  }
+
+  save(): HTMLElement {
+    this.negocio.setData(this.getData());
+    this.negocio.setDataDetallesVenta(this.getDataDetallesVenta());
+
+    const model = this.negocio.save();
+
+    if (!model) {
+      this.setDataError('Error');
+      this.setTable(this.negocio.list());
+      return this.getHTML();
+    }
+
+    this.setData(model);
+    this.setTable(this.negocio.list());
+    return this.getHTML();
+  }
+
+  delete(id: number): void {
+    const state = this.negocio.delete(id);
+    if (!state)
+      this.setDataError('Error');
+
+    this.clearData();
+    this.setTable(this.negocio.list());
+  }
+
+  find(id: number): void {
+    const data = this.negocio.find(id);
+    if (!data) {
+      this.setDataError('error');
+      return;
+    }
+    
+    this.setData(data);
+  }
+
+  _initListener(): void {
+    this.btnCreate.addEventListener('click', () => {
+      this.create();
+    });
+
+    this.btnSave.addEventListener('click', () => {
+      this.save();
+    });
+
+    this.outputTable.addEventListener('click', (evt) => {
+      const element = evt.target as HTMLElement;
+      if (element.nodeName != 'BUTTON')
+        return;
+
+      const id = element.getAttribute('data-id') || 0;
+      if (element.getAttribute('data-type') == 'delete')
+        this.delete(Number(id));
+
+      if (element.getAttribute('data-type') == 'view')
+        this.find(Number(id));
+    });
+
+    this.btnAppend.addEventListener('click', () => {
+      this.appendDetalleVenta();
+    });
+
+    this.inputDetallesVenta.addEventListener('click', (evt) => {
+      const element = evt.target as HTMLElement;
+      if (element.nodeName != 'BUTTON')
+        return;
+
+      const id = element.getAttribute('data-row') || '';
+      const item = this.inputDetallesVenta.querySelector(`#${id}`) as HTMLDivElement;
+      
+      this.inputDetallesVenta.removeChild(item);
+    })
   }
 }
