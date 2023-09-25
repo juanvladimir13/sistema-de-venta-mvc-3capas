@@ -11,11 +11,14 @@ export class CCategoria {
 
     this._initListener();
   }
+  
+  list(): void {
+    const table = this.model.list();
+    this.view.setTable(table);
+  }
 
   create(): HTMLElement {
-    const table = this.model.list();
-
-    this.view.setTable(table);
+    this.list();
     this.view.clearData();
     return this.view.getHTML();
   }
@@ -24,15 +27,10 @@ export class CCategoria {
     const data = this.view.getData();
     this.model.setData(data);
     const model = this.model.save();
-
-    if (!model) {
-      this.view.setDataError('Error');
-      this.view.setTable(this.model.list());
-      return this.view.getHTML();
-    }
-
-    this.view.setData(model);
-    this.view.setTable(this.model.list());
+    
+    !model ? this.view.setDataError('Error') : this.view.setData(model);
+    
+    this.list();
     return this.view.getHTML();
   }
 
@@ -42,7 +40,7 @@ export class CCategoria {
       this.view.setDataError('Error');
 
     this.view.clearData();
-    this.view.setTable(this.model.list());
+    this.list();
   }
 
   find(id: number): void {

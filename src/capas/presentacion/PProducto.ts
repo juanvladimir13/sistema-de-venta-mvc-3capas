@@ -70,7 +70,7 @@ export class PProducto {
     this.outputError.textContent = message;
   }
 
-  setCategorias(rows: Categoria[]): void {
+  setCategoriasList(rows: Categoria[]): void {
     this.inputCategoria.innerHTML = '';
     rows.forEach(
       item => {
@@ -114,15 +114,15 @@ export class PProducto {
   }
 
   create(): HTMLElement {
-    const table = this.negocio.list();
-
-    this.setTable(table);
+    this.list();
     this.clearData();
-
-    const categorias = this.negocioCategoria.list();
-    this.setCategorias(categorias);
-
+  this.setCategorias();
     return this.getHTML();
+  }
+  
+  setCategorias(): void {
+    const categorias = this.negocioCategoria.list();
+    this.setCategoriasList(categorias);
   }
 
   save(): HTMLElement {
@@ -132,12 +132,12 @@ export class PProducto {
 
     if (!model) {
       this.setDataError('Error');
-      this.setTable(this.negocio.list());
+      this.list();
       return this.getHTML();
     }
 
     this.setData(model);
-    this.setTable(this.negocio.list());
+    this.list();
     return this.getHTML();
   }
 
@@ -147,7 +147,7 @@ export class PProducto {
       this.setDataError('Error');
 
     this.clearData();
-    this.setTable(this.negocio.list());
+    this.list();
   }
 
   find(id: number): void {
@@ -162,6 +162,11 @@ export class PProducto {
 
   getHTML(): HTMLElement {
     return this.component;
+  }
+  
+  list():void {
+    const table = this.negocio.list();
+    this.setTable(table);
   }
 
   _initListener(): void {

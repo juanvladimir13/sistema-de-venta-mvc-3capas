@@ -95,11 +95,14 @@ export class PCategoria {
   getHTML(): HTMLElement {
     return this.component;
   }
+  
+  list():void {
+    const table = this.negocio.list();
+    this.setTable(table);
+  }
 
   create(): HTMLElement {
-    const table = this.negocio.list();
-
-    this.setTable(table);
+    this.list();
     this.clearData();
     return this.getHTML();
   }
@@ -111,12 +114,13 @@ export class PCategoria {
 
     if (!model) {
       this.setDataError('Error');
-      this.setTable(this.negocio.list());
+      
+      this.list();
       return this.getHTML();
     }
 
     this.setData(model);
-    this.setTable(this.negocio.list());
+    this.list();
     return this.getHTML();
   }
 
@@ -126,7 +130,7 @@ export class PCategoria {
       this.setDataError('Error');
 
     this.clearData();
-    this.setTable(this.negocio.list());
+    this.list();
   }
 
   find(id: number): void {
