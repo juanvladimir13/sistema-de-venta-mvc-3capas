@@ -5,7 +5,7 @@ export class DProducto {
   private id: number;
   private nombre: string;
   private precio: number;
-  private categoria_id:number;
+  private categoria_id: number;
 
   private database: DatabaseJson<Producto>;
 
@@ -38,7 +38,7 @@ export class DProducto {
       this.database.update(data);
   }
 
-  delete(id:number):boolean {
+  delete(id: number): boolean {
     return this.database.delete(id);
   }
 

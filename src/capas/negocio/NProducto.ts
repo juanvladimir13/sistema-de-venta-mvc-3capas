@@ -2,21 +2,21 @@ import { Producto } from "../../interfaces/system";
 import { DProducto } from "../datos/DProducto";
 
 export class NProducto {
-  private data:DProducto;
+  private data: DProducto;
 
-  constructor(){
+  constructor() {
     this.data = new DProducto();
   }
 
-  setData(data:Producto): void{
+  setData(data: Producto): void {
     this.data.setData(data);
   }
 
-  save(): Producto| undefined{
+  save(): Producto | undefined {
     return this.data.save();
   }
 
-  delete(id:number):boolean{
+  delete(id: number): boolean {
     return this.data.delete(id);
   }
 
@@ -24,7 +24,7 @@ export class NProducto {
     return this.data.find(id);
   }
 
-  list():Producto[] {
+  list(): Producto[] {
     return this.data.list();
   }
 }

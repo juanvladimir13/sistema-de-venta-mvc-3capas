@@ -139,20 +139,8 @@ export class PVenta {
       </tr>`
     });
 
-    const tableHTML = `
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>.Bs</th>
-          <th width="50px"></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${cells}
-      </tbody>
-    `
-
-    this.outputTable.innerHTML = tableHTML;
+    const tbody = this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
+    tbody.innerHTML = cells;
   }
 
   getHTML(): HTMLElement {
@@ -189,7 +177,7 @@ export class PVenta {
   create(): HTMLElement {
     const producto = new NProducto();
     this.inflaterSelectProducto(producto.list());
-    
+
     const table = this.negocio.list();
     this.setTable(table);
     this.clearData();
@@ -228,7 +216,7 @@ export class PVenta {
       this.setDataError('error');
       return;
     }
-    
+
     this.setData(data);
   }
 
@@ -265,7 +253,7 @@ export class PVenta {
 
       const id = element.getAttribute('data-row') || '';
       const item = this.inputDetallesVenta.querySelector(`#${id}`) as HTMLDivElement;
-      
+
       this.inputDetallesVenta.removeChild(item);
     })
   }

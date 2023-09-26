@@ -131,20 +131,8 @@ export class VVenta {
       </tr>`
     });
 
-    const tableHTML = `
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>.Bs</th>
-          <th width="50px"></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${cells}
-      </tbody>
-    `
-
-    this.outputTable.innerHTML = tableHTML;
+    const tbody = this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
+    tbody.innerHTML = cells;
   }
 
   getHTML(): HTMLElement {

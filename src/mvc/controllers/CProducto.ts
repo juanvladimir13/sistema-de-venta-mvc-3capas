@@ -22,13 +22,13 @@ export class CProducto {
 
     this.view.setTable(table);
     this.view.clearData();
-    
+
     this.setCategorias();
-    
+
     return this.view.getHTML();
   }
-  
-  setCategorias():void {
+
+  setCategorias(): void {
     const categorias = this.modelCategoria.list();
     this.view.setCategorias(categorias);
   }

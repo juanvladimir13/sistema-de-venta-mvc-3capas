@@ -16,7 +16,7 @@ export class CVenta {
   create(): HTMLElement {
     const producto = new MProducto();
     this.view.inflaterSelectProducto(producto.list());
-    
+
     const table = this.model.list();
     this.view.setTable(table);
     this.view.clearData();
@@ -55,7 +55,7 @@ export class CVenta {
       this.view.setDataError('error');
       return;
     }
-    
+
     this.view.setData(data);
   }
 
@@ -92,7 +92,7 @@ export class CVenta {
 
       const id = element.getAttribute('data-row') || '';
       const item = this.view.inputDetallesVenta.querySelector(`#${id}`) as HTMLDivElement;
-      
+
       this.view.inputDetallesVenta.removeChild(item);
     })
   }

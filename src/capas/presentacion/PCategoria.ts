@@ -76,27 +76,15 @@ export class PCategoria {
       </tr>`
     });
 
-    const tableHTML = `
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Descripcion</th>
-          <th width="50px"></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${cells}
-      </tbody>
-    `
-
-    this.outputTable.innerHTML = tableHTML;
+    const tbody = this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
+    tbody.innerHTML = cells;
   }
 
   getHTML(): HTMLElement {
     return this.component;
   }
-  
-  list():void {
+
+  list(): void {
     const table = this.negocio.list();
     this.setTable(table);
   }
@@ -114,7 +102,7 @@ export class PCategoria {
 
     if (!model) {
       this.setDataError('Error');
-      
+
       this.list();
       return this.getHTML();
     }

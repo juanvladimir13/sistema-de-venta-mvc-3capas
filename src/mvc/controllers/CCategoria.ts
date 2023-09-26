@@ -11,7 +11,7 @@ export class CCategoria {
 
     this._initListener();
   }
-  
+
   list(): void {
     const table = this.model.list();
     this.view.setTable(table);
@@ -27,9 +27,9 @@ export class CCategoria {
     const data = this.view.getData();
     this.model.setData(data);
     const model = this.model.save();
-    
+
     !model ? this.view.setDataError('Error') : this.view.setData(model);
-    
+
     this.list();
     return this.view.getHTML();
   }

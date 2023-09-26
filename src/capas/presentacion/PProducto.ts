@@ -97,29 +97,17 @@ export class PProducto {
       </tr>`
     });
 
-    const tableHTML = `
-    <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Precio</th>
-          <th width="50px"></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${cells}
-      </tbody>
-    `
-
-    this.outputTable.innerHTML = tableHTML;
+    const tbody = this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
+    tbody.innerHTML = cells;
   }
 
   create(): HTMLElement {
     this.list();
     this.clearData();
-  this.setCategorias();
+    this.setCategorias();
     return this.getHTML();
   }
-  
+
   setCategorias(): void {
     const categorias = this.negocioCategoria.list();
     this.setCategoriasList(categorias);
@@ -163,8 +151,8 @@ export class PProducto {
   getHTML(): HTMLElement {
     return this.component;
   }
-  
-  list():void {
+
+  list(): void {
     const table = this.negocio.list();
     this.setTable(table);
   }
