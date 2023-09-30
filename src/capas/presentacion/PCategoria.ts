@@ -2,6 +2,7 @@ import { Categoria } from '../../interfaces/system';
 import { NCategoria } from '../negocio/NCategoria';
 
 export class PCategoria {
+  private id:number;
   private negocio: NCategoria;
 
   private component: HTMLElement;
@@ -17,6 +18,7 @@ export class PCategoria {
   private outputError: HTMLParagraphElement;
 
   constructor() {
+    
     const $template = document.querySelector<HTMLTemplateElement>('#categoria');
     const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
@@ -33,8 +35,13 @@ export class PCategoria {
     this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
 
+    this.id = 0;
     this.negocio = new NCategoria();
     this._initListener();
+  }
+  
+  setId(id:number):void {
+    this.id = id;
   }
 
   getData(): Categoria {
@@ -112,8 +119,8 @@ export class PCategoria {
     return this.getHTML();
   }
 
-  delete(id: number): void {
-    const state = this.negocio.delete(id);
+  delete(): void {
+    const state = this.negocio.delete(this.id);
     if (!state)
       this.setDataError('Error');
 
@@ -121,8 +128,8 @@ export class PCategoria {
     this.list();
   }
 
-  find(id: number): void {
-    const data = this.negocio.find(id);
+  find(): void {
+    const data = this.negocio.find(this.id);
     if (!data) {
       this.setDataError('error');
       return;
@@ -146,11 +153,17 @@ export class PCategoria {
         return;
 
       const id = element.getAttribute('data-id') || 0;
-      if (element.getAttribute('data-type') == 'delete')
-        this.delete(Number(id));
+      if (element.getAttribute('data-type') == 'delete'){
+        this.setId(Number(id));
+        this.delete();
+      }
+        
 
-      if (element.getAttribute('data-type') == 'view')
-        this.find(Number(id));
+      if (element.getAttribute('data-type') == 'view'){
+        this.setId(Number(id));
+        this.find();
+      }
+        
     });
   }
 }

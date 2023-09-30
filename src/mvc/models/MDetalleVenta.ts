@@ -58,6 +58,16 @@ export class MDetalleVenta {
   delete(id: number): boolean {
     return this.database.delete(id);
   }
+  
+  deleteDetalleVenta(ventaId: number): boolean {
+    const detallesVentas = this.list(ventaId);
+
+    detallesVentas.forEach(item => {
+      this.delete(item.id);
+    });
+
+    return true;
+  }
 
   find(id: number): DetalleVenta | undefined {
     return this.database.find(id);

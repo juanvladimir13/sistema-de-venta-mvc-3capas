@@ -18,9 +18,7 @@ export class CProducto {
   }
 
   create(): HTMLElement {
-    const table = this.model.list();
-
-    this.view.setTable(table);
+    this.list();
     this.view.clearData();
 
     this.setCategorias();
@@ -37,15 +35,10 @@ export class CProducto {
     const data = this.view.getData();
     this.model.setData(data);
     const model = this.model.save();
+    
+    !model ? this.view.setDataError('Error') : this.view.setData(model);
 
-    if (!model) {
-      this.view.setDataError('Error');
-      this.view.setTable(this.model.list());
-      return this.view.getHTML();
-    }
-
-    this.view.setData(model);
-    this.view.setTable(this.model.list());
+    this.list();
     return this.view.getHTML();
   }
 
@@ -55,7 +48,7 @@ export class CProducto {
       this.view.setDataError('Error');
 
     this.view.clearData();
-    this.view.setTable(this.model.list());
+    this.list();
   }
 
   find(id: number): void {
@@ -66,6 +59,11 @@ export class CProducto {
     }
 
     this.view.setData(data!);
+  }
+  
+  list():void {
+    const rows = this.model.list();
+    this.view.setTable(rows);
   }
 
   _initListener(): void {

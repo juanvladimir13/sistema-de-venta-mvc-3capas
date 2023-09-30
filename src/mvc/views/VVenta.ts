@@ -69,7 +69,7 @@ export class VVenta {
 
   setData(data: Venta): void {
     this._setData(data);
-    this._setDataDetallesVenta(data.detallesVenta!);
+    this.setDataDetallesVenta(data.detallesVenta!);
   }
 
   _setData(data: Venta): void {
@@ -78,7 +78,7 @@ export class VVenta {
     this.inputMontoTotal.value = String(data.montoTotal);
   }
 
-  _setDataDetallesVenta(detallesVenta: DetalleVenta[]): void {
+  setDataDetallesVenta(detallesVenta: DetalleVenta[]): void {
     this.inputDetallesVenta.innerHTML = '';
     const divDetalleVenta = this.component.querySelector('#detalleVenta') as HTMLDivElement;
 
@@ -96,7 +96,8 @@ export class VVenta {
       const inputProducto_id = inputDetalleVenta.querySelector('select[name="producto_id"]') as HTMLSelectElement;
 
       btnDelete.setAttribute('data-row', id);
-
+      btnDelete.setAttribute('data-id', id);
+      
       inputId.value = String(detalleVenta.id);
       inputCantidad.value = String(detalleVenta.cantidad);
       inputPrecio.value = String(detalleVenta.precio);

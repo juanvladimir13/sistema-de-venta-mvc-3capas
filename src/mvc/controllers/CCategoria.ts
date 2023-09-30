@@ -4,12 +4,17 @@ import { VCategoria } from '../views/VCategoria';
 export class CCategoria {
   private model: MCategoria;
   private view: VCategoria;
-
+  private id:number;
+  
   constructor() {
     this.model = new MCategoria();
     this.view = new VCategoria();
-
+    thi.id = 0;
     this._initListener();
+  }
+  
+  setId(id:number):void {
+    this.id = id;
   }
 
   list(): void {
@@ -34,8 +39,8 @@ export class CCategoria {
     return this.view.getHTML();
   }
 
-  delete(id: number): void {
-    const state = this.model.delete(id);
+  delete(): void {
+    const state = this.model.delete(this.id);
     if (!state)
       this.view.setDataError('Error');
 
@@ -43,8 +48,8 @@ export class CCategoria {
     this.list();
   }
 
-  find(id: number): void {
-    const data = this.model.find(id);
+  find(): void {
+    const data = this.model.find(this.id);
     if (!data) {
       this.view.setDataError('error');
       return;
@@ -68,11 +73,15 @@ export class CCategoria {
         return;
 
       const id = element.getAttribute('data-id') || 0;
-      if (element.getAttribute('data-type') == 'delete')
-        this.delete(Number(id));
+      if (element.getAttribute('data-type') == 'delete'){
+        this.setId(Number(id));
+        this.delete();
+      }
 
-      if (element.getAttribute('data-type') == 'view')
-        this.find(Number(id));
+      if (element.getAttribute('data-type') == 'view'){
+        this.setId(Number(id));
+        this.find();
+      }
     });
   }
 }

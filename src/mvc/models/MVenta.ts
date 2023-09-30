@@ -20,6 +20,10 @@ export class MVenta {
 
     this.database = new DatabaseJson('venta');
   }
+  
+  getId():number {
+    return this.id;
+  }
 
   setData(data: Venta): void {
     this.id = data.id;
@@ -50,12 +54,7 @@ export class MVenta {
 
     if (!venta) return undefined;
 
-    this._savePrepareDetalleVenta(venta.id);
-
-    this.detallesVenta.forEach((detalleVenta) => {
-      detalleVenta.setVentaId(venta.id);
-      detalleVenta.save();
-    });
+    this.saveDetalleVenta(venta.id);
 
     venta.montoTotal = new MDetalleVenta().getMontoTotal(venta.id);
     const ventaTmp = this.database.update(venta);
@@ -64,8 +63,18 @@ export class MVenta {
 
     return {
       ...ventaTmp,
-      detallesVenta: this._findDetallesVenta(venta.id)
+      detallesVenta: this.findDetallesVenta(venta.id)
     }
+  }
+  
+  saveDetalleVenta(ventaId:number):boolean {
+    this._savePrepareDetalleVenta(venta.id);
+    
+    this.detallesVenta.forEach((detalleVenta) => {
+      detalleVenta.setVentaId(ventaId);
+      detalleVenta.save();
+    });
+    return true;
   }
 
   _savePrepareDetalleVenta(ventaId: number): void {
@@ -85,6 +94,16 @@ export class MVenta {
   delete(id: number): boolean {
     return this.database.delete(id);
   }
+  
+  deleteDetalleVenta(ventaId: number): boolean {
+    const modelDetalleVenta = new MDetalleVenta();
+    return modelDetalleVenta.deleteDetalleVenta(ventaId);
+  }
+  
+  deleteDetalleVentaItem(id: number): boolean {
+    const modelDetalleVenta = new MDetalleVenta();
+    return modelDetalleVenta.delete(item.id);
+  }
 
   find(id: number): Venta | undefined {
     const venta = this.database.find(id);
@@ -92,11 +111,11 @@ export class MVenta {
 
     return {
       ...venta,
-      detallesVenta: this._findDetallesVenta(venta.id)
+      detallesVenta: this.findDetallesVenta(venta.id)
     }
   }
 
-  _findDetallesVenta(ventaId: number): DetalleVenta[] {
+  findDetallesVenta(ventaId: number): DetalleVenta[] {
     const detallesVenta = new MDetalleVenta();
     return detallesVenta.list(ventaId);
   }

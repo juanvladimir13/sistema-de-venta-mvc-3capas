@@ -9,6 +9,10 @@ export class DatabaseJson<T> {
   constructor(tableName: string) {
     this.tableName = tableName
   }
+  
+  save(data: any): T| undefined {
+    return data.id == 0 ? this.insert(data) : this.update(data);
+  }
 
   insert(data: T): T {
     let rows = this._readFileJson();
