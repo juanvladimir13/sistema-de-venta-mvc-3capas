@@ -3,6 +3,7 @@ import { NCategoria } from '../negocio/NCategoria';
 import { NProducto } from '../negocio/NProducto';
 
 export class PProducto {
+  private id:number;
   private negocio: NProducto;
   private negocioCategoria: NCategoria;
 
@@ -20,6 +21,7 @@ export class PProducto {
   private outputError: HTMLParagraphElement;
 
   constructor() {
+    this.id = 0;
     this.negocio = new NProducto();
     this.negocioCategoria = new NCategoria();
 
@@ -42,6 +44,10 @@ export class PProducto {
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
 
     this._initListener();
+  }
+  
+  setId(id:number):void {
+    this.id = id;
   }
 
   getData(): Producto {
@@ -129,8 +135,8 @@ export class PProducto {
     return this.getHTML();
   }
 
-  delete(id: number): void {
-    const state = this.negocio.delete(id);
+  delete(): void {
+    const state = this.negocio.delete(this.id);
     if (!state)
       this.setDataError('Error');
 
@@ -138,8 +144,8 @@ export class PProducto {
     this.list();
   }
 
-  find(id: number): void {
-    const data = this.negocio.find(id);
+  find(): void {
+    const data = this.negocio.find(this.id);
     if (!data) {
       this.setDataError('error');
       return;
@@ -172,11 +178,15 @@ export class PProducto {
         return;
 
       const id = element.getAttribute('data-id') || 0;
-      if (element.getAttribute('data-type') == 'delete')
-        this.delete(Number(id));
+      if (element.getAttribute('data-type') == 'delete'){
+        this.setId(Number(id));
+        this.delete();
+      }
 
-      if (element.getAttribute('data-type') == 'view')
-        this.find(Number(id));
+      if (element.getAttribute('data-type') == 'view'){
+        this.setId(Number(id));
+        this.find();
+      }
     });
   }
 }

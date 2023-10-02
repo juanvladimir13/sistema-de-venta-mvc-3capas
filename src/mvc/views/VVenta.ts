@@ -96,7 +96,7 @@ export class VVenta {
       const inputProducto_id = inputDetalleVenta.querySelector('select[name="producto_id"]') as HTMLSelectElement;
 
       btnDelete.setAttribute('data-row', id);
-      btnDelete.setAttribute('data-id', id);
+      btnDelete.setAttribute('data-id', String(detalleVenta.id));
       
       inputId.value = String(detalleVenta.id);
       inputCantidad.value = String(detalleVenta.cantidad);
@@ -140,7 +140,7 @@ export class VVenta {
     return this.component;
   }
 
-  inflaterSelectProducto(productos: Producto[]): void {
+  setProductos(productos: Producto[]): void {
     const inputDetalleVenta = this.component.querySelector('#detalleVenta') as HTMLDivElement;
     const inputProductoId = inputDetalleVenta.querySelector('select') as HTMLSelectElement;
 

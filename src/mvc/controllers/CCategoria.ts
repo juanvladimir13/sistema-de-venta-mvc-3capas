@@ -4,16 +4,16 @@ import { VCategoria } from '../views/VCategoria';
 export class CCategoria {
   private model: MCategoria;
   private view: VCategoria;
-  private id:number;
-  
+  private id: number;
+
   constructor() {
     this.model = new MCategoria();
     this.view = new VCategoria();
-    thi.id = 0;
+    this.id = 0;
     this._initListener();
   }
-  
-  setId(id:number):void {
+
+  setId(id: number): void {
     this.id = id;
   }
 
@@ -73,12 +73,12 @@ export class CCategoria {
         return;
 
       const id = element.getAttribute('data-id') || 0;
-      if (element.getAttribute('data-type') == 'delete'){
+      if (element.getAttribute('data-type') == 'delete') {
         this.setId(Number(id));
         this.delete();
       }
 
-      if (element.getAttribute('data-type') == 'view'){
+      if (element.getAttribute('data-type') == 'view') {
         this.setId(Number(id));
         this.find();
       }

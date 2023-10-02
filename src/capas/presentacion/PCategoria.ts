@@ -107,14 +107,8 @@ export class PCategoria {
     this.negocio.setData(data);
     const model = this.negocio.save();
 
-    if (!model) {
-      this.setDataError('Error');
-
-      this.list();
-      return this.getHTML();
-    }
-
-    this.setData(model);
+    !model ? this.setDataError('Error') : this.setData(model);
+    
     this.list();
     return this.getHTML();
   }

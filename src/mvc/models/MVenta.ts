@@ -20,8 +20,8 @@ export class MVenta {
 
     this.database = new DatabaseJson('venta');
   }
-  
-  getId():number {
+
+  getId(): number {
     return this.id;
   }
 
@@ -37,8 +37,12 @@ export class MVenta {
     data.forEach((detalle) => {
       const modelDetalle = new MDetalleVenta();
       modelDetalle.setData(detalle);
-      this.detallesVenta.push(modelDetalle);
+      this.addDetallesVenta(modelDetalle);
     });
+  }
+
+  addDetallesVenta(detalleVenta: MDetalleVenta): void {
+    this.detallesVenta.push(detalleVenta);
   }
 
   save(): Venta | undefined {
@@ -48,16 +52,23 @@ export class MVenta {
       montoTotal: this.montoTotal
     };
 
-    const venta = this.id == 0 ?
-      this.database.insert(data) :
-      this.database.update(data);
+    const venta = this.database.save(data);
 
     if (!venta) return undefined;
 
-    this.saveDetalleVenta(venta.id);
+    this.setData(venta);
+    this.saveDetalleVenta(this.id);
 
-    venta.montoTotal = new MDetalleVenta().getMontoTotal(venta.id);
-    const ventaTmp = this.database.update(venta);
+    const montoTotal = new MDetalleVenta().getMontoTotal(this.id);
+
+    this.setMontoTotal(montoTotal);
+
+    const ventaTmp = this.database.update({
+      id: this.id,
+      fecha: this.fecha,
+      montoTotal: this.montoTotal
+
+    });
 
     if (!ventaTmp) return undefined;
 
@@ -66,14 +77,19 @@ export class MVenta {
       detallesVenta: this.findDetallesVenta(venta.id)
     }
   }
-  
-  saveDetalleVenta(ventaId:number):boolean {
-    this._savePrepareDetalleVenta(venta.id);
-    
+
+  setMontoTotal(montoTotal: number): void {
+    this.montoTotal = montoTotal;
+  }
+
+  saveDetalleVenta(ventaId:number): boolean {
+    this._savePrepareDetalleVenta(ventaId);
+
     this.detallesVenta.forEach((detalleVenta) => {
       detalleVenta.setVentaId(ventaId);
       detalleVenta.save();
     });
+
     return true;
   }
 
@@ -94,15 +110,15 @@ export class MVenta {
   delete(id: number): boolean {
     return this.database.delete(id);
   }
-  
+
   deleteDetalleVenta(ventaId: number): boolean {
     const modelDetalleVenta = new MDetalleVenta();
     return modelDetalleVenta.deleteDetalleVenta(ventaId);
   }
-  
+
   deleteDetalleVentaItem(id: number): boolean {
     const modelDetalleVenta = new MDetalleVenta();
-    return modelDetalleVenta.delete(item.id);
+    return modelDetalleVenta.delete(id);
   }
 
   find(id: number): Venta | undefined {

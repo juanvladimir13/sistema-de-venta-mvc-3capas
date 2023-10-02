@@ -3,38 +3,46 @@ import { VVenta } from "../views/VVenta";
 import { MProducto } from '../models/MProducto';
 
 export class CVenta {
+  private id: number;
   private model: MVenta;
   private view: VVenta;
+  private modelProducto: MProducto;
 
   constructor() {
     this.model = new MVenta();
     this.view = new VVenta();
-
+    this.modelProducto = new MProducto();
+    this.id = 0;
     this._initListener();
+  }
+  setId(id:number):void{
+    this.id = id;
   }
 
   create(): HTMLElement {
-    const producto = new MProducto();
-    this.view.inflaterSelectProducto(producto.list());
-
+    this.setProductos();
+    
     this.list();
     this.view.clearData();
     return this.view.getHTML();
   }
+  
+  setProductos():void{
+    const productos = this.modelProducto.list();
+    this.view.setProductos(productos);
+  }
 
   save(): HTMLElement {
-    this.model.setData(this.view.getData());
-    this.model.setDataDetallesVenta(this.view.getDataDetallesVenta());
+    const dataVenta = this.view.getData();
+    const dataDetalleVenta = this.view.getDataDetallesVenta();
+    
+    this.model.setData(dataVenta);
+    this.model.setDataDetallesVenta(dataDetalleVenta);
 
     const model = this.model.save();
 
-    if (!model) {
-      this.view.setDataError('Error');
-      this.list();
-      return this.view.getHTML();
-    }
-
-    this.view.setData(model);
+    !model ? this.view.setDataError('Error'): this.view.setData(model);
+    
     this.list();
     return this.view.getHTML();
   }
@@ -43,7 +51,7 @@ export class CVenta {
     this.model.setData(this.view.getData());
     this.model.setDataDetallesVenta(this.view.getDataDetallesVenta());
 
-    const model = this.model.saveDetalleVenta();
+    const model = this.model.saveDetalleVenta(this.model.getId());
 
     if (!model) {
       this.view.setDataError('Error');
@@ -56,8 +64,8 @@ export class CVenta {
     return this.view.getHTML();
   }
 
-  delete(id: number): void {
-    const state = this.model.delete(id);
+  delete(): void {
+    const state = this.model.delete(this.id);
     if (!state)
       this.view.setDataError('Error');
 
@@ -83,8 +91,8 @@ export class CVenta {
     this.listDetalleVenta();
   }
 
-  find(id: number): void {
-    const data = this.model.find(id);
+  find(): void {
+    const data = this.model.find(this.id);
     if (!data) {
       this.view.setDataError('error');
       return;
@@ -119,11 +127,16 @@ export class CVenta {
         return;
 
       const id = element.getAttribute('data-id') || 0;
-      if (element.getAttribute('data-type') == 'delete')
-        this.delete(Number(id));
+      if (element.getAttribute('data-type') == 'delete'){
+        this.setId(Number(id));
+        this.delete();
+      }
+        
 
-      if (element.getAttribute('data-type') == 'view')
-        this.find(Number(id));
+      if (element.getAttribute('data-type') == 'view'){
+        this.setId(Number(id));
+        this.find();
+      }
     });
 
     this.view.btnAppend.addEventListener('click', () => {
@@ -138,8 +151,6 @@ export class CVenta {
       const detalleId = element.getAttribute('data-id') || 0;
       const id = element.getAttribute('data-row') || '';
       const item = this.view.inputDetallesVenta.querySelector(`#${id}`) as HTMLDivElement;
-
-      this.deleteDetalleVentaItem(Number(detalleId));
       this.view.inputDetallesVenta.removeChild(item);
     })
   }

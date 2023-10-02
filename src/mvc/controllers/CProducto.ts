@@ -4,6 +4,7 @@ import { VProducto } from '../views/VProducto';
 
 
 export class CProducto {
+  private id: number;
   private model: MProducto;
   private view: VProducto;
 
@@ -14,7 +15,13 @@ export class CProducto {
     this.view = new VProducto();
     this.modelCategoria = new MCategoria();
 
+    this.id = 0;
+
     this._initListener();
+  }
+
+  setId(id: number): void {
+    this.id = id;
   }
 
   create(): HTMLElement {
@@ -35,15 +42,15 @@ export class CProducto {
     const data = this.view.getData();
     this.model.setData(data);
     const model = this.model.save();
-    
+
     !model ? this.view.setDataError('Error') : this.view.setData(model);
 
     this.list();
     return this.view.getHTML();
   }
 
-  delete(id: number): void {
-    const state = this.model.delete(id);
+  delete(): void {
+    const state = this.model.delete(this.id);
     if (!state)
       this.view.setDataError('Error');
 
@@ -51,8 +58,8 @@ export class CProducto {
     this.list();
   }
 
-  find(id: number): void {
-    const data = this.model.find(id);
+  find(): void {
+    const data = this.model.find(this.id);
     if (!data) {
       this.view.setDataError('error');
       return;
@@ -60,8 +67,8 @@ export class CProducto {
 
     this.view.setData(data!);
   }
-  
-  list():void {
+
+  list(): void {
     const rows = this.model.list();
     this.view.setTable(rows);
   }
@@ -81,11 +88,16 @@ export class CProducto {
         return;
 
       const id = element.getAttribute('data-id') || 0;
-      if (element.getAttribute('data-type') == 'delete')
-        this.delete(Number(id));
+      if (element.getAttribute('data-type') == 'delete') {
+        this.setId(Number(id));
+        this.delete();
+      }
 
-      if (element.getAttribute('data-type') == 'view')
-        this.find(Number(id));
+
+      if (element.getAttribute('data-type') == 'view') {
+        this.setId(Number(id));
+        this.find();
+      }
     });
   }
 }

@@ -50,9 +50,7 @@ export class MDetalleVenta {
       subTotal: this.subTotal
     };
 
-    return this.id == 0 ?
-      this.database.insert(data) :
-      this.database.update(data);
+    return this.database.save(data);
   }
 
   delete(id: number): boolean {

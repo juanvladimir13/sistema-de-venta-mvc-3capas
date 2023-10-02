@@ -104,6 +104,7 @@ export class PVenta {
       const inputProducto_id = inputDetalleVenta.querySelector('select[name="producto_id"]') as HTMLSelectElement;
 
       btnDelete.setAttribute('data-row', id);
+      btnDelete.setAttribute('data-id', String(detalleVenta.id));
 
       inputId.value = String(detalleVenta.id);
       inputCantidad.value = String(detalleVenta.cantidad);
@@ -251,9 +252,12 @@ export class PVenta {
       if (element.nodeName != 'BUTTON')
         return;
 
+      //const detalleId = element.getAttribute('data-id') || 0;
       const id = element.getAttribute('data-row') || '';
       const item = this.inputDetallesVenta.querySelector(`#${id}`) as HTMLDivElement;
 
+      //if (detalleId != 0)
+      //this.deleteDetalleVentaItem(Number(detalleId));
       this.inputDetallesVenta.removeChild(item);
     })
   }
