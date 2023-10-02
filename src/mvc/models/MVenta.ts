@@ -116,9 +116,9 @@ export class MVenta {
     return modelDetalleVenta.deleteDetalleVenta(ventaId);
   }
 
-  deleteDetalleVentaItem(id: number): boolean {
+  deleteDetalleVentaItem(detalleVentaId: number): boolean {
     const modelDetalleVenta = new MDetalleVenta();
-    return modelDetalleVenta.delete(id);
+    return modelDetalleVenta.delete(detalleVentaId);
   }
 
   find(id: number): Venta | undefined {
