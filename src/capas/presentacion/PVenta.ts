@@ -252,7 +252,6 @@ export class PVenta {
       if (element.nodeName != 'BUTTON')
         return;
 
-        const detalleId = element.getAttribute('data-id') || 0;
         const id = element.getAttribute('data-row') || '';
         const item = this.inputDetallesVenta.querySelector(`#${id}`) as HTMLDivElement;
         this.inputDetallesVenta.removeChild(item);
