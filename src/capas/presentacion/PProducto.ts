@@ -1,8 +1,9 @@
 import { Categoria, Producto } from '../../interfaces/system';
+import { TemplateMethod } from '../../utils/template_method';
 import { NCategoria } from '../negocio/NCategoria';
 import { NProducto } from '../negocio/NProducto';
 
-export class PProducto {
+export class PProducto extends TemplateMethod {
   private id:number;
   private negocio: NProducto;
   private negocioCategoria: NCategoria;
@@ -21,6 +22,8 @@ export class PProducto {
   private outputError: HTMLParagraphElement;
 
   constructor() {
+    super();
+
     this.id = 0;
     this.negocio = new NProducto();
     this.negocioCategoria = new NCategoria();
@@ -88,23 +91,20 @@ export class PProducto {
       }
     )
   }
+  
+  rowToString(row:any): string {
+    return `<tr>
+    <td>${row.nombre}</td>
+    <td>${row.precio}</td>
+    <td width="50px">
+      <button data-id="${row.id}" data-type="view">🔎</button>
+      <button data-id="${row.id}" data-type="delete">❌</button>
+    </td>
+    </tr>`
+  }
 
-  setTable(rows: Producto[]): void {
-    let cells = ''
-
-    rows.forEach(row => {
-      cells += `<tr>
-      <td>${row.nombre}</td>
-      <td>${row.precio}</td>
-      <td width="50px">
-        <button data-id="${row.id}" data-type="view">🔎</button>
-        <button data-id="${row.id}" data-type="delete">❌</button>
-      </td>
-      </tr>`
-    });
-
-    const tbody = this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
-    tbody.innerHTML = cells;
+  getTable(): HTMLTableSectionElement{
+    return this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
   }
 
   create(): HTMLElement {

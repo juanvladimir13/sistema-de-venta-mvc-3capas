@@ -1,7 +1,8 @@
 import { Categoria } from '../../interfaces/system';
+import { TemplateMethod } from '../../utils/template_method';
 import { NCategoria } from '../negocio/NCategoria';
 
-export class PCategoria {
+export class PCategoria extends TemplateMethod {
   private id:number;
   private negocio: NCategoria;
 
@@ -18,7 +19,7 @@ export class PCategoria {
   private outputError: HTMLParagraphElement;
 
   constructor() {
-    
+    super();
     const $template = document.querySelector<HTMLTemplateElement>('#categoria');
     const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
@@ -69,22 +70,19 @@ export class PCategoria {
     this.outputError.textContent = message;
   }
 
-  setTable(rows: Categoria[]): void {
-    let cells = ''
+  getTable(): HTMLTableSectionElement {
+    return this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
+  }
 
-    rows.forEach(row => {
-      cells += `<tr>
-      <td>${row.nombre}</td>
-      <td>${row.descripcion}</td>
-      <td width="50px">
-        <button data-id="${row.id}" data-type="view">🔎</button>
-        <button data-id="${row.id}" data-type="delete">❌</button>
-      </td>
-      </tr>`
-    });
-
-    const tbody = this.outputTable.querySelector('tbody') as HTMLTableSectionElement;
-    tbody.innerHTML = cells;
+  rowToString(row:any): string {
+    return `<tr>
+    <td>${row.nombre}</td>
+    <td>${row.descripcion}</td>
+    <td width="50px">
+      <button data-id="${row.id}" data-type="view">🔎</button>
+      <button data-id="${row.id}" data-type="delete">❌</button>
+    </td>
+    </tr>`;
   }
 
   getHTML(): HTMLElement {
